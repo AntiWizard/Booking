@@ -61,6 +61,8 @@ class User:
         self.phone = phone
         if not id:
             self.id = uuid.uuid4().hex
+    def __str__(self):
+        return "User Instance: " + self.name
 
 class Book:
     def __init__(self, start_date, end_date, bookee, booker):
@@ -73,13 +75,16 @@ class Book:
         self.cost = (self.end_date - self.start_date) * self.bookee.costPerUnit
         return self.cost
 
+    def __str__(self):
+        return "Book instance for user " + self.booker.name
+
 @singleton
 class BookInventory:
     booking_map = dict()
 
     # @staticmethod
     def addMapping(self, user, book):
-        self.booking_map.add(user, book)
+        self.booking_map[user] =  book
 
     def findByBook(self, book):
         for _user,_book in self.booking_map.items():

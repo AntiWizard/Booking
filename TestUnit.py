@@ -4,6 +4,9 @@ from booking import *
 class TestBookHotel(unittest.TestCase):
     room1 = Room(12,3,250000)
     hotel = Hotel("aras baran", "tabriz, el goli", (10,10), "04134773050")
+    user1 = User("vali", "04144422225")
+    book = Book(200, 202, room1, user1)
+
     def test_defineHotel(self):
         # self.room1 = Room(12,3,250000)
         # self.hotel = Hotel("aras baran", "tabriz, el goli", (10,10), "04134773050")
@@ -22,8 +25,11 @@ class TestBookHotel(unittest.TestCase):
         print (book.calculateCost())
 
 
-    def test_bookee(self):
-        pass
+    def test_mapUserBook(self):
+        self.map = BookInventory()
+        self.map.addMapping(self.user1, self.book)
+        print(self.map.findByBook(self.book))
+        print(self.map.findByUser(self.user1))
 
     def test_book(self):
         pass
