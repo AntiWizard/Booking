@@ -1,28 +1,6 @@
 import sys , time , types , abc, datetime
 import uuid
 
-
-def singleton(class_):
-    instances = {}
-    def getinstance(*args, **kwargs):
-        if class_ not in instances:
-            instances[class_] = class_(*args, **kwargs)
-        return instances[class_]
-    return getinstance
-
-# @singleton
-# class MyClass(BaseClass):
-#     pass
-
-#
-# class Singleton(object):
-#     _instance = None
-#     def __new__(class_, *args, **kwargs):
-#         if not isinstance(class_._instance, class_):
-#             class_._instance = object.__new__(class_, *args, **kwargs)
-#         return class_._instance
-
-
 class Room:
     def __init__(self, room_no, capacity, costPerUnit):
         self.room_no = room_no
@@ -47,7 +25,6 @@ class Hotel:
         else:
             print("Error : miss match type")
 
-@singleton
 class Bookee:
     inventory = []
     def __init__(self,type):
@@ -78,7 +55,6 @@ class Book:
     def __str__(self):
         return "Book instance for user " + self.booker.name
 
-@singleton
 class BookInventory:
     booking_map = dict()
 
@@ -92,8 +68,3 @@ class BookInventory:
                 return _user
     def findByUser(self, user):
         return self.booking_map[user]
-
-# class tset:
-#     num = 0
-#     def __init__(self):
-#         num +=1
