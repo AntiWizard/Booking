@@ -8,6 +8,12 @@ class Room:
         self.busy = False
         self.costPerUnit = costPerUnit
 
+    def make_available(self):
+        self.busy = False
+
+    def __str__(self):
+        return str(self.room_no)
+
 
 class Hotel:
     def __init__(self, name, address, location, telNum, id=None):
@@ -37,7 +43,8 @@ class Bookee:
 
     def get_hotel_by_room(self, room):
         for _hotel,_room in self.hotel_room.items():
-            if room in _room :
+            print("46",_room, room)
+            if room in _room:
                 return _hotel
 
     def get_available_rooms(self):
@@ -47,6 +54,9 @@ class Bookee:
                 if not room.busy:
                     ava.append(room)
         return ava
+
+    def get_hotels(self):
+        return list(self.hotel_room.keys())
 
 
 class User:
@@ -65,31 +75,35 @@ class Book:
         self.end_date = end_date
         self.bookee = bookee # Room
         self.cost = self.calculate_cost()
+        self.bookee.busy = True
 
     def calculate_cost(self):
         self.cost = (self.end_date - self.start_date) * self.bookee.costPerUnit
         return self.cost
 
     def __str__(self):
-        return "Book instance for user " + self.booker.name
+        return "Book instance for room no " + str(self.bookee.room_no)
 
 
 class BookInventory:
-    book_user = dict()
+    user_book = dict()
 
     def add_book(self, book, user):
-        if user in self.book_user.keys():
-            self.book_user[user].append(book)
+        if user in self.user_book.keys():
+            self.user_book[user].append(book)
         else:
-            self.book_user[user] = [book]
+            self.user_book[user] = [book]
 
     def get_books_by_user(self, user):
-        if not user in self.book_user.keys():
+        if not user in self.user_book.keys():
             return []
-        return self.book_user[user]
+        return self.user_book[user]
 
     def get_user_by_book(self, book):
-        for _user,_book in self.book_user.items():
+        for _user,_book in self.user_book.items():
             if book in _book:
                 return _user
         return None
+
+    def get_users(self):
+        return list(self.user_book.keys())
