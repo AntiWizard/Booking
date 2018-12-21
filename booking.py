@@ -43,7 +43,6 @@ class Bookee:
 
     def get_hotel_by_room(self, room):
         for _hotel,_room in self.hotel_room.items():
-            print("46",_room, room)
             if room in _room:
                 return _hotel
 

@@ -95,12 +95,11 @@ class TestBookHotel(unittest.TestCase):
 
         book_user3 = Book(150,151, room2)
         book_inv.add_book(book_user3, user3)
-
-        print(book_inv.get_books_by_user(user3)[0])
-        print(hotel_room.hotel_room)
+        # print(book_inv.get_books_by_user(user3)[0])
+        # print(hotel_room.hotel_room)
         self.assertEqual(hotel2,
                              hotel_room.get_hotel_by_room(
-                                book_inv.get_books_by_user(user3)[0]
+                                book_inv.get_books_by_user(user3)[0].bookee
                              )
                          )
 
