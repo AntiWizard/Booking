@@ -10,61 +10,86 @@ class Room:
 
 
 class Hotel:
-    rooms = []
-    def __init__(self, name, address, location, phone, id=None):
-        self.name = name
-        self.address = address
-        self.location = location
-        self.phone = phone
+    def __init__(self, name, address, location, telNum, id=None):
         if not id:
             self.id = uuid.uuid4().hex
-
-    def addRoom(self, room):
-        if(type(room) == Room):
-            self.rooms.append(room)
         else:
-            print("Error : miss match type")
+            self.id = id
+        self.address = address
+        self.location = location
+        self.telNum = telNum
+        self.name = name
+
 
 class Bookee:
-    inventory = []
-    def __init__(self,type):
-        self.type = type
-    def addBookee(self, item):
-        self.inventory.append(item)
+    hotel_room = dict() # Hotel and [Room]
+
+    def add_bookee(self, hotel, room):
+        if hotel in self.hotel_room.keys():
+            self.hotel_room[hotel].append(room)
+        else:
+            self.hotel_room[hotel] = [room]
+
+    def get_rooms_by_hotel(self, hotel):
+        if not hotel in self.hotel_room.keys():
+            return []
+        return self.hotel_room[hotel]
+
+    def get_hotel_by_room(self, room):
+        for _hotel,_room in self.hotel_room.items():
+            if room in _room :
+                return _hotel
+
+    def get_available_rooms(self):
+        ava = []
+        for hotel in self.hotel_room.keys():
+            for room in self.hotel_room[hotel]:
+                if not room.busy:
+                    ava.append(room)
+        return ava
+
 
 class User:
-    def __init__(self, name, phone, id=None):
+    def __init__(self, name, phone, age, id=None):
         self.name = name
         self.phone = phone
+        self.age = age
         if not id:
             self.id = uuid.uuid4().hex
     def __str__(self):
         return "User Instance: " + self.name
 
 class Book:
-    def __init__(self, start_date, end_date, bookee, booker):
+    def __init__(self, start_date, end_date, bookee):
         self.start_date = start_date
         self.end_date = end_date
-        self.bookee = bookee
-        self.booker = booker
+        self.bookee = bookee # Room
+        self.cost = self.calculate_cost()
 
-    def calculateCost(self):
+    def calculate_cost(self):
         self.cost = (self.end_date - self.start_date) * self.bookee.costPerUnit
         return self.cost
 
     def __str__(self):
         return "Book instance for user " + self.booker.name
 
+
 class BookInventory:
-    booking_map = dict()
+    book_user = dict()
 
-    # @staticmethod
-    def addMapping(self, user, book):
-        self.booking_map[user] =  book
+    def add_book(self, book, user):
+        if user in self.book_user.keys():
+            self.book_user[user].append(book)
+        else:
+            self.book_user[user] = [book]
 
-    def findByBook(self, book):
-        for _user,_book in self.booking_map.items():
-            if _book == book:
+    def get_books_by_user(self, user):
+        if not user in self.book_user.keys():
+            return []
+        return self.book_user[user]
+
+    def get_user_by_book(self, book):
+        for _user,_book in self.book_user.items():
+            if book in _book:
                 return _user
-    def findByUser(self, user):
-        return self.booking_map[user]
+        return None
