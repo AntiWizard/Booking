@@ -2,42 +2,16 @@ import sys, time, types, abc, datetime
 import uuid
 import enum
 
+
 class PricingPolicy(enum.Enum):
-
-    daily = 1
-    once = 2
-
-class Room:
-    def __init__(self, room_no, capacity, costPerUnit):
-        self.room_no = room_no
-        self.capacity = capacity
-        self.busy = False
-        self.costPerUnit = costPerUnit
-
-    def make_available(self):
-        self.busy = False
-
-    def __str__(self):
-        return str(self.room_no)
-
-
-class Hotel:
-    def __init__(self, name, address, location, telNum, id=None):
-        if not id:
-            self.id = uuid.uuid4().hex
-        else:
-            self.id = id
-        self.address = address
-        self.location = location
-        self.telNum = telNum
-        self.name = name
+    DAILY = 1
+    ONCE = 2
 
 
 class User:
-    def __init__(self, name, phone, age, id=None):
+    def __init__(self, name, phone, id=None):
         self.name = name
         self.phone = phone
-        self.age = age
         if not id:
             self.id = uuid.uuid4().hex
 
@@ -46,28 +20,20 @@ class User:
 
 
 class Book:
-    def __init__(self, start_date, end_date, bookee):
+    def __init__(self, bookee, start_date, end_date=None):
         self.start_date = start_date
         self.end_date = end_date
         self.bookee = bookee  # Bookable
         self.bookee.busy = True
 
     def calculate_cost(self):
-        if self.bookee.get_bookable_spec().get_property('pricing_policy') in PricingPolicy.once:
+        if self.bookee.get_bookable_spec().get_property('pricing_policy') is PricingPolicy.ONCE:
             return self.bookee.get_bookable_spec.get_property('cost_per_unit')
         else:
-            return (self.end_date - self.start_date) * self.bookee.get_bookable_spec.get_property('cost_per_unit')
+            return (self.end_date - self.start_date) * self.bookee.get_bookable_spec().get_property('cost_per_unit')
 
     def __str__(self):
-        return "Book instance for room no " + str(self.bookee.room_no)
-
-
-
-
-
-
-
-
+        return "Book instance for "+ str(self.bookee.get_bookable_spec.get_property('type'))
 
 
 class BookInventory:
@@ -92,11 +58,6 @@ class BookInventory:
 
     def get_users(self):
         return list(self.user_book.keys())
-
-    def search(self):
-        # TODO: do search
-        pass
-
 
 
 class BookableSpec:
@@ -130,7 +91,10 @@ class BookableSpec:
 
 
 class AbstractBookable(metaclass=abc.ABCMeta):
-    __bookable_spec = BookableSpec()
+    __bookable_spec = None
+
+    def __init__(self, spec):
+        self.__bookable_spec = spec
 
     def get_bookable_spec(self):
         return self.__bookable_spec
@@ -147,10 +111,10 @@ class AbstractBookable(metaclass=abc.ABCMeta):
         pass
 
 
-class BookInventory:
+class BookableInventory:
     __bookable_list = list()
 
-    def add_bookable(self, bookable):
+    def add_bookable(self, bookable): # bookable is a AbstractBookable
         self.__bookable_list.append(bookable)
 
     def get_bookable_list(self):
@@ -159,7 +123,7 @@ class BookInventory:
     def search(self, bookspec):
         result = []
         for bookable in self.__bookable_list:
-            if bookable.matches(bookspec):
+            if bookable.get_bookable_spec().matches(bookspec):
                 result.append(bookable)
         return result
 
@@ -202,4 +166,3 @@ class BookableRoom(AbstractBookable):
 
     def get_hotels(self):
         return list(self.hotel_room.keys())
-
