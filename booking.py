@@ -9,9 +9,8 @@ class PricingPolicy(enum.Enum):
 
 
 class User:
-    def __init__(self, name, phone, id=None):
+    def __init__(self, name, id=None):
         self.name = name
-        self.phone = phone
         if not id:
             self.id = uuid.uuid4().hex
 
@@ -101,6 +100,9 @@ class AbstractBookable(metaclass=abc.ABCMeta):
 
     def get_bookable_type(self):
         self.__bookable_spec.get_property('type')
+
+    def set_bookable_spec(self, bookable_spec):
+        self.__bookable_spec = bookable_spec
 
     @abc.abstractmethod
     def get_cost_per_unit(self):
