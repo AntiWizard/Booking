@@ -12,7 +12,7 @@ class TestBookHotel(unittest.TestCase):
         hotel1 = Hotel("Aras Baran", "El goli, Tabriz", (10,10), "04134443050")
         room1 = Room(101,5,2560000)
         room2 = Room(303,3,3060000)
-        hotel_room = Bookee()
+        hotel_room = BookableRoom()
         hotel_room.add_bookee(hotel1, room1)
         hotel_room.add_bookee(hotel1, room2)
         # assert
@@ -52,7 +52,7 @@ class TestBookHotel(unittest.TestCase):
         show rooms which are not busy
         """
         # init
-        hotel_room = Bookee()
+        hotel_room = BookableRoom()
 
         # test
         no_of_available = len(hotel_room.get_available_rooms())
@@ -69,7 +69,7 @@ class TestBookHotel(unittest.TestCase):
         #init
         book_inv = BookInventory()
         user2 = User("Bagher Khan", "09141027080", 46)
-        hotel_room = Bookee()
+        hotel_room = BookableRoom()
 
         booked_before = book_inv.get_books_by_user(user2)
         new_book = Book(204, 205, hotel_room.get_available_rooms()[0])
@@ -86,7 +86,7 @@ class TestBookHotel(unittest.TestCase):
         a story showing how to find which hotel user booked a room from
         """
         book_inv = BookInventory()
-        hotel_room = Bookee()
+        hotel_room = BookableRoom()
 
         user3 = User("AmirKabir", "09101007070", 52)
         room2 = Room(212, 5, 200000)
