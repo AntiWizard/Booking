@@ -108,6 +108,9 @@ class BookableSpec:
         else:
             return None
 
+    def get_keys(self):
+        return self.__properties.keys()
+
     def set_property(self, prop, value):
         try:
             self.__properties.update({prop:value})
@@ -117,8 +120,9 @@ class BookableSpec:
 
 
     def matches(self, otherSpec):
-        for prop in self.__properties.keys() & otherSpec.keys():
-            if not self.__properties[prop] == otherSpec[prop]:
+        for prop in self.__properties.keys() & otherSpec.get_keys():
+            print("124", prop, self.__properties[prop], otherSpec.get_property(prop))
+            if not self.__properties[prop] == otherSpec.get_property(prop):
                 return False
         return True
 
