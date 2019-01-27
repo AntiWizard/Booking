@@ -100,7 +100,10 @@ class BookInventory:
 
 
 class BookableSpec:
-    __properties = dict()
+    __properties = None
+    
+    def __init__(self):
+        self.__properties = dict()
 
     def get_property(self, prop):
         if prop in self.__properties.keys():
@@ -121,7 +124,6 @@ class BookableSpec:
 
     def matches(self, otherSpec):
         for prop in self.__properties.keys() & otherSpec.get_keys():
-            print("124", prop, self.__properties[prop], otherSpec.get_property(prop))
             if not self.__properties[prop] == otherSpec.get_property(prop):
                 return False
         return True

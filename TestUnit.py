@@ -41,13 +41,13 @@ class TestBookHotel(unittest.TestCase):
     def test_match(self):
         spec1 = BookableSpec()
         spec2 = BookableSpec()
-        spec1.set_property('type', 'roo2222m')
-        spec1.set_property('cost_per_unit', '25000')
+        spec1.set_property('type', 'room')
+        spec1.set_property('cost_per_unit', '25000000')
         spec1.set_property('floor', 2)
         spec1.set_property('pricing_policy',PricingPolicy.daily)
+
         spec2.set_property('type', 'room')
         spec2.set_property('cost_per_unit', '25000000')
-        spec2.set_property('pricing_policy', PricingPolicy.once)
+        spec2.set_property('pricing_policy', PricingPolicy.daily)
 
-        print
         self.assertTrue(spec1.matches(spec2))
