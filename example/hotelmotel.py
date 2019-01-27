@@ -6,7 +6,7 @@
 from ..booking import *
 
 
-class Room(AbstractBookable):
+class Room(Bookable):
     def __init__(self, room_no, capacity):
         super().__init__()
         self.get_bookable_spec().add_property('type', 'room')
@@ -22,4 +22,4 @@ if __name__ == "__main__":
     room1 = Room(303, 3)
     book_obj = Book(room1, 100, 103)
     book_inv = BookInventory()
-    book_inv.add_book(book_obj, user1)
+    book_inv.add_book(user1, book_obj)

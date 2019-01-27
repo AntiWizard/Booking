@@ -19,7 +19,7 @@ class TestBookHotel(unittest.TestCase):
         self.assertTrue(spec1.matches(spec2))
 
     def test_search(self):
-        class RoomBookable(AbstractBookable):
+        class RoomBookable(Bookable):
             def get_cost_per_unit(self):
                 super().get_cost_per_unit()
 
@@ -58,7 +58,7 @@ class TestBookHotel(unittest.TestCase):
         self.assertEqual(result_spec, [room_book2])
 
     def test_calculate_cost(self):
-        class RoomBookable(AbstractBookable):
+        class RoomBookable(Bookable):
             def get_cost_per_unit(self):
                 super().get_cost_per_unit()
 
