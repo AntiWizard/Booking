@@ -1,6 +1,7 @@
 import sys, time, types, abc, datetime
 import uuid
 import enum
+from abc import ABC
 
 
 class PricingPolicy(enum.Enum):
@@ -101,7 +102,7 @@ class BookableSpec:
         return self.__properties.keys()
 
 
-class Bookable:
+class Bookable(ABC):
     __bookable_spec = None
 
     def __init__(self, spec):
