@@ -8,6 +8,11 @@ class PricingPolicy(enum.Enum):
     ONCE = 2
 
 
+class AssociationPolicy(enum.Enum):
+    INFINITE = 0
+    FINITE = 1
+
+
 class User:
     def __init__(self, name, id=None):
         self.name = name
@@ -23,10 +28,18 @@ class Book:
         self.start_date = start_date
         self.end_date = end_date
         self.bookee = bookee  # Bookable
+        if bookee.get_bookable_spec().get_property('association_policy') == AssociationPolicy.FINITE:
+            amount = bookee.get_bookable_spec().get_property('amount')
+            if amount > 0:
+                bookee.get_bookable_spec().set_property('amount', amount - 1)
+                if amount == 1:
+                    bookee.make_unavailable()
+            else:
+                Exception()
 
     def calculate_cost(self):
         if self.bookee.get_bookable_spec().get_property('pricing_policy') is PricingPolicy.ONCE:
-            return self.bookee.get_bookable_spec.get_property('cost_per_unit')
+            return self.bookee.get_bookable_spec().get_property('cost_per_unit')
         else:
             return (self.end_date - self.start_date) * self.bookee.get_bookable_spec().get_property('cost_per_unit')
 
@@ -94,7 +107,7 @@ class Bookable:
     def __init__(self, spec):
         self.__bookable_spec = spec
 
-    def get_bookable_spec(self):
+    def get_bookable_spec(self) -> BookableSpec:
         return self.__bookable_spec
 
     def get_bookable_type(self):
